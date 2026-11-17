@@ -1,0 +1,21 @@
+name: Build GfLL DLL
+on: [workflow_dispatch, push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v3
+
+      - name: Build DLL (Win32 Release)
+        run: msbuild gfll.sln /p:Configuration=Release /p:Platform=Win32
+
+      - name: Upload Compiled DLL
+        uses: actions/upload-artifact@v4
+        with:
+          name: gfll-dll-release
+          path: Release/*.dll
